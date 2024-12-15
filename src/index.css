@@ -46,6 +46,48 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
+img{
+  width: 75%;
+}
+
+/* table, td, th{
+  border: solid red;
+  border-collapse: collapse;
+} */
+
+#timer {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#timer th{
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+
+
+#break input{
+  width: 20px;
+}
+
+#break{
+  background-color: grey;
+}
+
+#x {
+  display: flex;
+  align-items: center;  /* Vertically center */
+  justify-content: center;  /* Horizontally center (optional) */
+  height: 100%;  /* Ensure the cell takes full height */
+  width: 25px;
+}
+
+input{
+  width: 100px;
+}
+
+
 button:hover {
   border-color: #646cff;
 }
