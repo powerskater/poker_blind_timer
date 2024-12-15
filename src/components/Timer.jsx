@@ -3,8 +3,13 @@ import sound from './files/purge_alarm.wav'
 
 function Timer({duration}){
     const [time, setTime] = useState(duration)
+    const [isRunning, setIsRunning] = useState(false)
     let alarmAudio = new Audio(sound)
     useEffect(() => {
+        if (!isRunning) {
+            return
+        }
+
         if (time <= 0){
             alarmAudio.play()
             return
@@ -12,7 +17,7 @@ function Timer({duration}){
         setTimeout(() => {
             setTime(time - 1000)
         }, 1000)
-    }, [time])
+    }, [time, isRunning])
 
     function getFormattedTime(milliseconds){
         let total_seconds = parseInt(Math.floor(milliseconds / 1000))
@@ -21,20 +26,38 @@ function Timer({duration}){
         let seconds = parseInt(total_seconds % 60)
         let minutes = parseInt(total_minutes % 60)
 
-        if(seconds == 0 && minutes == 0){
-            
+        if(seconds < 10){
+            return `${minutes}:0${seconds}`
         }
 
         return `${minutes}:${seconds}`
     }
-
+    
+    function toggleTimer(){
+        if (isRunning){
+            setIsRunning(false)
+        }
+        else{
+            setIsRunning(true)
+        }
+    }
 
 
     return(
     <>
-        {getFormattedTime(time)}
-        <br/>
-        <button type="button">Start/Stop</button>
+        <table id="timer">
+            <tbody>
+                <tr>
+                    <th><h2>Blinds</h2></th>
+                    <th><h1>{getFormattedTime(time)}</h1></th>
+                    <th><h2>Ante</h2></th>
+                </tr>
+            </tbody>
+            
+        </table>
+        <button>Prev Blind</button>
+        <button onClick={toggleTimer} type="button">{isRunning ? "Stop" : "Start"}</button>
+        <button>Next Blind</button>
     </>
     )
 }
