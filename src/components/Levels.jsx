@@ -1,41 +1,53 @@
 import { useState } from "react";
 import Level from "./Level";
-import './Levels.css'
-
-let numLevels = 1;
+import "./Levels.css";
 
 function Levels() {
-  const [levels, setLevels] = useState([
-    { id: 1, type: "level", levelNum: 1 }
-  ]);
+  const [levels, setLevels] = useState([{ id: 1, type: "level", levelNum: 1 }]);
 
-  
+  // Function to add a new level
   function addLevel() {
-    numLevels++;
-    setLevels((prevLevels) => [
-      ...prevLevels,
-      { id: numLevels, type: "level", levelNum: numLevels }
-    ]);
+    setLevels((prevLevels) => {
+      // Calculate the next level number by counting existing levels of type 'level'
+      const nextLevelNum = prevLevels.filter((level) => level.type === "level").length + 1;
+
+      return [
+        ...prevLevels,
+        { id: Date.now(), type: "level", levelNum: nextLevelNum },
+      ];
+    });
   }
 
-  
+  // Function to add a new break
   function addBreak() {
-    numLevels++
     setLevels((prevLevels) => [
       ...prevLevels,
-      { id: numLevels, type: "break", levelNum: numLevels }
+      { id: Date.now(), type: "break" },
     ]);
   }
 
-  
+  // Function to remove a level and recalculate level numbers
   function removeLevel(id) {
-    numLevels--
-    setLevels((prevLevels) => prevLevels.filter((level) => level.id !== id));
+    setLevels((prevLevels) => {
+      // Filter out the level to be removed
+      const updatedLevels = prevLevels.filter((level) => level.id !== id);
+
+      // Recalculate levelNum for levels of type 'level'
+      let levelCounter = 1;
+      return updatedLevels.map((level) => {
+        if (level.type === "level") {
+          return { ...level, levelNum: levelCounter++ };
+        }
+        return level;
+      });
+    });
   }
 
   return (
     <>
-    <a href='index.html'><button>Go Back</button></a>
+      <a href="index.html">
+        <button>Go Back</button>
+      </a>
       <table>
         <thead>
           <tr>
