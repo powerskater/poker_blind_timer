@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import sound from './files/purge_alarm.wav'
 
-function Timer({duration}){
+function Timer({level, duration}){
     const [time, setTime] = useState(duration)
     const [isRunning, setIsRunning] = useState(false)
     let alarmAudio = new Audio(sound)
@@ -48,9 +48,10 @@ function Timer({duration}){
         <table id="timer">
             <tbody>
                 <tr>
-                    <th><h2>Blinds</h2></th>
-                    <th><h1>{getFormattedTime(time)}</h1></th>
-                    <th><h2>Ante</h2></th>
+                    <th>Small Blind: {level?.smallBlind || 0}</th>
+                    <th>{getFormattedTime(time)}</th>
+                    <th>Big Blind: {level?.bigBlind || 0}</th>
+                    <th>Ante: {level?.ante || 0}</th>
                 </tr>
             </tbody>
             

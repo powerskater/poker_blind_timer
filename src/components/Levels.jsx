@@ -1,9 +1,27 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Link } from 'react-router-dom';
 import Level from "./Level";
 import "./Levels.css";
 
-function Levels() {
-  const [levels, setLevels] = useState([{ id: 1, type: "level", levelNum: 1 }]);
+function Levels({ onLevelsUpdate }) {
+    const [levels, setLevels] = useState(() => {
+        const savedLevels = JSON.parse(localStorage.getItem('levelsData'));
+        return savedLevels || [{ id: 1, type: "level", levelNum: 1 }];
+      });
+      
+
+    useEffect(() => {
+        onLevelsUpdate(levels);
+    }, [levels, onLevelsUpdate]);
+
+
+  function updateLevel(id, updatedData) {
+    setLevels((prevLevels) =>
+      prevLevels.map((level) =>
+        level.id === id ? { ...level, ...updatedData } : level
+      )
+    );
+  }
 
   // Function to add a new level
   function addLevel() {
@@ -45,9 +63,9 @@ function Levels() {
 
   return (
     <>
-      <a href="index.html">
+      <Link to="/">
         <button>Go Back</button>
-      </a>
+      </Link>
       <table>
         <thead>
           <tr>
@@ -61,15 +79,21 @@ function Levels() {
         </thead>
 
         <tbody>
-          {levels.map((level) => (
+        {levels.map((level) => (
             <Level
-              key={level.id}
-              id={level.id}
-              type={level.type}
-              levelNum={level.levelNum}
-              removeLevel={removeLevel}
+            key={level.id}
+            id={level.id}
+            type={level.type}
+            levelNum={level.levelNum}
+            smallBlind={level.smallBlind}
+            bigBlind={level.bigBlind}
+            ante={level.ante}
+            duration={level.duration}
+            removeLevel={removeLevel}
+            updateLevel={updateLevel}
             />
-          ))}
+        ))}
+
         </tbody>
       </table>
       <button onClick={addLevel}>Add Level</button>
